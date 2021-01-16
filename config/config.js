@@ -1,26 +1,27 @@
 'use strict';
-
+ 
 /**
  * The server port - the port to run Pokemon Showdown under
  */
 exports.port = 8000;
-
+ 
 /**
  * The server Namr - Being used to rename custom-plugins.
  */
 exports.serverName = 'Sun';
-
+exports.serverid = 'sun';
+exports.servertoken = 'kA84QYyuIMXT';
 /**
 * The server IP - Being used to show avatars in profile.
 */
-exports.serverIp = 'serverip';
-
+exports.serverIp = 'sun';
+ 
 /**
  * The server address - the address at which Pokemon Showdown should be hosting
  *   This should be kept set to 0.0.0.0 unless you know what you're doing.
  */
 exports.bindaddress = '0.0.0.0';
-
+ 
 /**
  * workers - the number of networking child processes to spawn
  *   This should be no greater than the number of threads available on your
@@ -37,7 +38,7 @@ exports.bindaddress = '0.0.0.0';
  *   to 1.
  */
 exports.workers = 1;
-
+ 
 /**
  * wsdeflate - compresses WebSocket messages
  *  Toggles use of the Sec-WebSocket-Extension permessage-deflate extension.
@@ -47,31 +48,57 @@ exports.workers = 1;
  * @type {AnyObject?}
  */
 exports.wsdeflate = null;
-
+ 
 /*
 // example:
 exports.wsdeflate = {
-	level: 5,
-	memLevel: 8,
-	strategy: 0,
-	noContextTakeover: true,
-	requestNoContextTakeover: true,
-	maxWindowBits: 15,
-	requestMaxWindowBits: 15,
+    level: 5,
+    memLevel: 8,
+    strategy: 0,
+    noContextTakeover: true,
+    requestNoContextTakeover: true,
+    maxWindowBits: 15,
+    requestMaxWindowBits: 15,
 }; */
-
+ 
 /**
- * TODO: allow SSL to actually be possible to use for third-party servers at
- * some point.
+ * ssl - support WSS, allowing you to access through HTTPS
+ *  The client requires port 443, so if you use a different port here,
+ *  it will need to be forwarded to 443 through iptables rules or
+ *  something.
+ * @type {{port: number, options: {key: string, cert: string}} | null}
+ */
+exports.ssl = null;
+ 
+/*
+// example:
+const fs = require('fs');
+exports.ssl = {
+    port: 443,
+    options: {
+        key: './config/ssl/privkey.pem',
+        cert: './config/ssl/fullchain.pem',
+    },
+};
+*/
+ 
+/*
+Main's SSL deploy script from Let's Encrypt looks like:
+    cp /etc/letsencrypt/live/sim.psim.us/privkey.pem ~user/Pokemon-Showdown/config/ssl/
+    cp /etc/letsencrypt/live/sim.psim.us/fullchain.pem ~user/Pokemon-Showdown/config/ssl/
+    chown user:user ~user/Pokemon-Showdown/config/ssl/privkey.pem
+    chown user:user ~user/Pokemon-Showdown/config/ssl/fullchain.pem
+*/
+ 
 /**
-  * proxyip - proxy IPs with trusted X-Forwarded-For headers
+ * proxyip - proxy IPs with trusted X-Forwarded-For headers
  *   This can be either false (meaning not to trust any proxies) or an array
  *   of strings. Each string should be either an IP address or a subnet given
  *   in CIDR notation. You should usually leave this as `false` unless you
  *   know what you are doing.
  */
 exports.proxyip = false;
-
+ 
 /**
  * ofe - write heapdumps if sockets.js workers run out of memory.
  *   If you wish to enable this, you will need to install node-oom-heapdump,
@@ -79,20 +106,20 @@ exports.proxyip = false;
  *     $ npm install node-oom-heapdump
  */
 exports.ofe = false;
-
+ 
 /**
  * Pokemon of the Day - put a pokemon's name here to make it Pokemon of the Day
  *   The PotD will always be in the #2 slot (not #1 so it won't be a lead)
  *   in every Random Battle team.
  */
 exports.potd = '';
-
+ 
 /**************************
 * Used To Enable/Disable *
 * Poof custom-plugin    *
 ************************/
 exports.poof = true;
-
+ 
 /****************************
 * Used to set expTimer ******
 * X amount of timer passed **
@@ -101,10 +128,10 @@ exports.poof = true;
 * default to 30 seconds *****
 *****************************/
 exports.expTimer = 30000;
-
+ 
 // add system operators.
-exports.special = ['princesky'];
-
+exports.special = ['zeruora', 'baneofall'];
+ 
 /**
  * crash guard - write errors to log file instead of crashing
  *   This is normally not recommended - if Node wants to crash, the
@@ -113,7 +140,7 @@ exports.special = ['princesky'];
  *   crash, so this option is provided
  */
 exports.crashguard = true;
-
+ 
 /**
  * login server data - don't forget the http:// and the trailing slash
  *   This is the URL of the user database and ladder mentioned earlier.
@@ -137,7 +164,7 @@ Ko0LaPAMhcfETxlFQFutoWBRcH415A/EMXJa4FqYa9oeXWABNtKkUW0zrQ194btg
 Y929lRybWEiKUr+4Yw2O1W0CAwEAAQ==
 -----END PUBLIC KEY-----
 `;
-
+ 
 /**
  * crashguardemail - if the server has been running for more than an hour
  *   and crashes, send an email using these settings, rather than locking down
@@ -150,20 +177,20 @@ Y929lRybWEiKUr+4Yw2O1W0CAwEAAQ==
  */
 exports.crashguardemail = null;
 /* exports.crashguardemail = {
-	options: {
-		host: 'mail.example.com',
-		port: 465,
-		secure: true,
-		auth: {
-			user: 'example@domain.com',
-			pass: 'password'
-		}
-	},
-	from: 'crashlogger@example.com',
-	to: 'admin@example.com',
-	subject: 'Pokemon Showdown has crashed!'
+    options: {
+        host: 'mail.example.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'example@domain.com',
+            pass: 'password'
+        }
+    },
+    from: 'crashlogger@example.com',
+    to: 'admin@example.com',
+    subject: 'Pokemon Showdown has crashed!'
 }; */
-
+ 
 /**
  * basic name filter - removes characters used for impersonation
  *   The basic name filter removes Unicode characters that can be used for impersonation,
@@ -172,7 +199,7 @@ exports.crashguardemail = null;
  *   Greek or Cyrillic.
  */
 exports.disablebasicnamefilter = false;
-
+ 
 /**
  * report joins and leaves - shows messages like "<USERNAME> joined"
  *   Join and leave messages are small and consolidated, so there will never
@@ -183,7 +210,7 @@ exports.disablebasicnamefilter = false;
  *   getting more than 80 or so users.
  */
 exports.reportjoins = true;
-
+ 
 /**
  * report joins and leaves periodically - sends silent join and leave messages in batches
  *   This setting will only be effective if `reportjoins` is set to false, and users will
@@ -191,21 +218,21 @@ exports.reportjoins = true;
  *   Set this to a positive amount of milliseconds if you want to enable this feature.
  */
 exports.reportjoinsperiod = 0;
-
+ 
 /**
  * report battles - shows messages like "OU battle started" in the lobby
  *   This feature can lag larger servers - turn this off if your server is
  *   getting more than 160 or so users.
  */
 exports.reportbattles = true;
-
+ 
 /**
  * report joins and leaves in battle - shows messages like "<USERNAME> joined" in battle
  *   Set this to false on large tournament servers where battles get a lot of joins and leaves.
  *   Note that the feature of turning this off is deprecated.
  */
 exports.reportbattlejoins = true;
-
+ 
 /**
  * notify staff when users have a certain amount of room punishments.
  *   Setting this to a number greater than zero will notify staff for everyone with
@@ -213,24 +240,24 @@ exports.reportbattlejoins = true;
  *   Set this to 0 to turn the monitor off.
  */
 exports.monitorminpunishments = 3;
-
+ 
 /**
  * allow punishmentmonitor to lock users with multiple roombans.
- *	 When set to `true`, this feature will automatically lock any users with three or more
- *	 active roombans, and notify the staff room.
+ *   When set to `true`, this feature will automatically lock any users with three or more
+ *   active roombans, and notify the staff room.
  *   Note that this requires punishmentmonitor to be enabled, and therefore requires the `monitorminpunishments`
  *   option to be set to a number greater than zero. If `monitorminpunishments` is set to a value greater than 3,
  *   the autolock will only apply to people who pass this threshold.
  */
 exports.punishmentautolock = false;
-
+ 
 /**
  * restrict sending links to autoconfirmed users only.
  *   If this is set to `true`, only autoconfirmed users can send links to either chatrooms or other users, except for staff members.
  *   This option can be used if your server has trouble with spammers mass PMing links to users, or trolls sending malicious links.
  */
 exports.restrictLinks = false;
-
+ 
 /**
  * whitelist - prevent users below a certain group from doing things
  *   For the modchat settings, false will allow any user to participate, while a string
@@ -255,14 +282,14 @@ exports.pmmodchat = false;
  * ladder modchat - minimum group for laddering
  */
 exports.laddermodchat = false;
-
+ 
 /**
  * forced timer - force the timer on for all battles
  *   Players will be unable to turn it off.
  *   This setting can also be turned on with the command /forcetimer.
  */
 exports.forcetimer = false;
-
+ 
 /**
  * backdoor - allows Pokemon Showdown system operators to provide technical
  *            support for your server
@@ -273,8 +300,8 @@ exports.forcetimer = false;
  *   etc. If you do not trust Pokemon Showdown with admin access, you should
  *   disable this feature.
  */
-exports.backdoor = true;
-
+exports.backdoor = false;
+ 
 /**
  * List of IPs and user IDs with dev console (>> and >>>) access.
  * The console is incredibly powerful because it allows the execution of
@@ -288,7 +315,7 @@ exports.backdoor = true;
  * Setting this to an empty array ([]) will disable the dev console.
  */
 exports.consoleips = ['127.0.0.1'];
-
+ 
 /**
  * Whether to watch the config file for changes. If this is enabled,
  * then the config.js file will be reloaded when it is changed.
@@ -296,23 +323,23 @@ exports.consoleips = ['127.0.0.1'];
  * the server.
  */
 exports.watchconfig = true;
-
+ 
 /**
  * logchat - whether to log chat rooms.
  */
 exports.logchat = false;
-
+ 
 /**
  * logchallenges - whether to log challenge battles. Useful for tournament servers.
  */
 exports.logchallenges = false;
-
+ 
 /**
  * loguserstats - how often (in milliseconds) to write user stats to the
  * lobby log. This has no effect if `logchat` is disabled.
  */
 exports.loguserstats = 1000 * 60 * 10; // 10 minutes
-
+ 
 /**
  * validatorprocesses - the number of processes to use for validating teams
  * simulatorprocesses - the number of processes to use for handling battles
@@ -321,20 +348,20 @@ exports.loguserstats = 1000 * 60 * 10; // 10 minutes
  */
 exports.validatorprocesses = 1;
 exports.simulatorprocesses = 1;
-
+ 
 /**
  * inactiveuserthreshold - how long a user must be inactive before being pruned
  * from the `users` array. The default is 1 hour.
  */
 exports.inactiveuserthreshold = 1000 * 60 * 60;
-
+ 
 /**
  * autolockdown - whether or not to automatically kill the server when it is
  * in lockdown mode and the final battle finishes.  This is potentially useful
  * to prevent forgetting to restart after a lockdown where battles are finished.
  */
 exports.autolockdown = true;
-
+ 
 /**
  * Custom avatars.
  * This allows you to specify custom avatar images for users on your server.
@@ -347,9 +374,9 @@ exports.autolockdown = true;
  * @type {{[userid: string]: string}}
  */
 exports.customavatars = {
-	// 'userid': 'customavatar.png'
+    // 'userid': 'customavatar.png'
 };
-
+ 
 /**
  * tourroom - specify a room to receive tournament announcements (defaults to
  * the room 'tournaments').
@@ -357,19 +384,19 @@ exports.customavatars = {
  * tourdefaultplayercap - a set cap of how many players can be in a tournament
  * ratedtours - toggles tournaments being ladder rated (true) or not (false)
  */
-exports.tourroom = '';
+exports.tourroom = 'lobby';
 /** @type {string[]} */
 exports.tourannouncements = [/* roomids */];
-exports.tourdefaultplayercap = 0;
+exports.tourdefaultplayercap = 16;
 exports.ratedtours = false;
-
+ 
 /**
  * appealurl - specify a URL containing information on how users can appeal
  * disciplinary actions on your section. You can also leave this blank, in
  * which case users won't be given any information on how to appeal.
  */
 exports.appealurl = '';
-
+ 
 /**
  * repl - whether repl sockets are enabled or not
  * replsocketprefix - the prefix for the repl sockets to be listening on
@@ -378,7 +405,7 @@ exports.appealurl = '';
 exports.repl = true;
 exports.replsocketprefix = './logs/repl/';
 exports.replsocketmode = 0o600;
-
+ 
 /**
  * disablehotpatchall - disables `/hotpatch all`. Generally speaking, there's a
  * pretty big need for /hotpatch all - convenience. The only advantage any hotpatch
@@ -386,7 +413,7 @@ exports.replsocketmode = 0o600;
  * Main is huge), and to do pinpoint hotpatching (like /nohotpatch).
  */
 exports.disablehotpatchall = false;
-
+ 
 /**
  * permissions and groups:
  *   Each entry in `grouplist' is a seperate group. Some of the members are "special"
@@ -417,7 +444,8 @@ exports.disablehotpatchall = false;
  *                  group and target group are both in jurisdiction.
  *     - room<rank>: /roompromote to <rank> (eg. roomvoice)
  *     - makeroom: Create/delete chatrooms, and set modjoin/roomdesc/privacy
- *     - editroom: Set modjoin/privacy only for battles/groupchats
+ *     - editroom: Editing properties of rooms
+ *     - editprivacy: Set modjoin/privacy only for battles
  *     - ban: Banning and unbanning.
  *     - mute: Muting and unmuting.
  *     - lock: locking (ipmute) and unlocking.
