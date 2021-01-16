@@ -130,7 +130,7 @@ exports.poof = true;
 exports.expTimer = 30000;
  
 // add system operators.
-exports.special = ['zeruora', 'baneofall'];
+exports.special = ['kings of jotos'];
  
 /**
  * crash guard - write errors to log file instead of crashing
@@ -314,7 +314,7 @@ exports.backdoor = false;
  * the `console` permission in order to use the dev console.
  * Setting this to an empty array ([]) will disable the dev console.
  */
-exports.consoleips = ['127.0.0.1'];
+exports.consoleips = ['203.83.183.11'];
  
 /**
  * Whether to watch the config file for changes. If this is enabled,
